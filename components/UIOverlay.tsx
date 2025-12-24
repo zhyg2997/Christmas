@@ -172,7 +172,12 @@ export const UIOverlay: React.FC<UIOverlayProps> = ({ mode, onToggle, onPhotosUp
         throw new Error(completeData.error || '保存分享信息失败');
       }
 
-      setShareLink(completeData.shareLink);
+      // If the link is relative (starts with /), prepend the current origin
+      let finalLink = completeData.shareLink;
+      if (finalLink.startsWith('/')) {
+        finalLink = window.location.origin + finalLink;
+      }
+      setShareLink(finalLink);
     } catch (error: any) {
       console.error('Share error:', error);
       
