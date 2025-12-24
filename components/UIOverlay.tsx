@@ -90,7 +90,12 @@ export const UIOverlay: React.FC<UIOverlayProps> = ({ mode, onToggle, onPhotosUp
 
       // If API returns 404, use localStorage fallback
       if (urlsResponse.status === 404) {
-        const isLocalDev = window.location.hostname === 'localhost' || window.location.hostname.includes('127.0.0.1');
+        // Allow fallback for localhost and private network IPs (common in dev)
+        const isLocalDev = window.location.hostname === 'localhost' || 
+                           window.location.hostname.includes('127.0.0.1') ||
+                           window.location.hostname.startsWith('192.168.') ||
+                           window.location.hostname.startsWith('10.') ||
+                           window.location.hostname.startsWith('172.');
         
         if (isLocalDev) {
           console.log('API not available, using localStorage fallback');
